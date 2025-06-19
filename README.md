@@ -1,63 +1,172 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=19815801&assignment_repo_type=AssignmentRepo)
-# Express.js RESTful API Assignment
 
-This assignment focuses on building a RESTful API using Express.js, implementing proper routing, middleware, and error handling.
+# 🚀 Express.js RESTful API – Product Management
 
-## Assignment Overview
+This is a RESTful API built using Express.js to manage a list of products. It includes full CRUD functionality, middleware, error handling, and advanced features like filtering, pagination, and search.
 
-You will:
-1. Set up an Express.js server
-2. Create RESTful API routes for a product resource
-3. Implement custom middleware for logging, authentication, and validation
-4. Add comprehensive error handling
-5. Develop advanced features like filtering, pagination, and search
+---
 
-## Getting Started
+## 🛠️ Setup Instructions
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install dependencies:
-   ```
-   npm install
-   ```
-4. Run the server:
-   ```
-   npm start
-   ```
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd week-2-express-js-assignment-Meshack-Mesh
+```
 
-## Files Included
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-- `Week2-Assignment.md`: Detailed assignment instructions
-- `server.js`: Starter Express.js server file
-- `.env.example`: Example environment variables file
+### 3. Create a `.env` File
+```env
+PORT=3000
+API_KEY=12345
+```
 
-## Requirements
+### 4. Start the Server
+```bash
+npm start
+```
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Postman, Insomnia, or curl for API testing
+---
 
-## API Endpoints
+## 🔐 Authentication
 
-The API will have the following endpoints:
+All routes require an API key header:
+```http
+x-api-key: 12345
+```
 
-- `GET /api/products`: Get all products
-- `GET /api/products/:id`: Get a specific product
-- `POST /api/products`: Create a new product
-- `PUT /api/products/:id`: Update a product
-- `DELETE /api/products/:id`: Delete a product
+---
 
-## Submission
+## 🧱 Middleware Implemented
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+- **Logger Middleware** – Logs method, URL, timestamp
+- **Auth Middleware** – Validates `x-api-key` header
+- **Validation Middleware** – Validates product body for POST/PUT
+- **Global Error Handler** – Catches and formats errors
 
-1. Complete all the required API endpoints
-2. Implement the middleware and error handling
-3. Document your API in the README.md
-4. Include examples of requests and responses
 
-## Resources
+API Endpoints
 
-- [Express.js Documentation](https://expressjs.com/)
-- [RESTful API Design Best Practices](https://restfulapi.net/)
-- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) 
+| Method | Endpoint                                      | Description                     |
+|--------|-----------------------------------------------|---------------------------------|
+| GET    | `/api/products`                               | List all products               |
+| GET    | `/api/products/:id`                           | Get product by ID               |
+| POST   | `/api/products`                               | Create a new product            |
+| PUT    | `/api/products/:id`                           | Update a product by ID          |
+| DELETE | `/api/products/:id`                           | Delete a product by ID          |
+| GET    | `/api/products?category=Books`                | Filter by category              |
+| GET    | `/api/products?search=laptop`                 | Search products by name         |
+| GET    | `/api/products?limit=5&page=1`                | Paginate product list           |
+| GET    | `/api/products/stats/count-by-category`       | Get product stats per category  |
+
+
+Example Requests & Responses
+
+ GET `/api/products/:id`
+
+```http
+GET http://localhost:3000/api/products/1
+Headers:
+  x-api-key: 12345
+```
+
+Response:
+```json
+{
+  "id": "1",
+  "name": "Math Textbook",
+  "description": "Covers algebra and calculus.",
+  "price": 750,
+  "category": "Books",
+  "inStock": true
+}
+
+
+POST `/api/products`
+
+```http
+POST http://localhost:3000/api/products
+Headers:
+  x-api-key: 12345
+Content-Type: application/json
+```
+
+Body:
+```json
+{
+  "name": "Laptop",
+  "description": "Dell Inspiron 15",
+  "price": 65000,
+  "category": "Electronics",
+  "inStock": true
+}
+---
+
+### ✅ PUT `/api/products/:id`
+
+```http
+PUT http://localhost:3000/api/products/1
+Headers:
+  x-api-key: 12345
+Content-Type: application/json
+```
+
+Body:
+```json
+{
+  "name": "Updated Math Textbook",
+  "description": "Now includes geometry.",
+  "price": 800,
+  "category": "Books",
+  "inStock": false
+}
+```
+
+Response:
+```json
+{
+  "id": "1",
+  "name": "Updated Math Textbook",
+  "description": "Now includes geometry.",
+  "price": 800,
+  "category": "Books",
+  "inStock": false
+}
+```
+
+---
+
+### ✅ DELETE `/api/products/:id`
+
+```http
+DELETE http://localhost:3000/api/products/2
+Headers:
+  x-api-key: 12345
+```
+
+Response:
+```json
+{
+  "message": "Product deleted successfully"
+}
+```
+
+## 📁 Project Structure
+
+```
+📦 week-2-express-js-assignment
+├── server.js
+├── routes
+│   └── products.js
+├── middleware
+│   ├── logger.js
+│   ├── auth.js
+│   ├── validate.js
+│   └── errorHandler.js
+├── utils
+│   └── errors.js
+├── .env.example
+└── README.md
